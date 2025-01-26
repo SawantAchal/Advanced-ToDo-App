@@ -4,7 +4,7 @@ import DatePicker from 'react-datepicker';
 import { format, startOfToday } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { updateTask, deleteTask, toggleImportant } from '../../redux/slices/taskSlice';
+import { updateTask, deleteTask, toggleTask, toggleImportant } from '../../redux/slices/taskSlice';
 
 const TaskDetails = ({ task, onClose }) => {
   const dispatch = useDispatch();
@@ -80,31 +80,38 @@ const TaskDetails = ({ task, onClose }) => {
     <div className="w-96 border-l dark:border-gray-800 bg-white dark:bg-gray-800 h-screen overflow-y-auto">
       <div className="p-4 flex flex-col h-full">
         <div className="flex justify-between items-center mb-4">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 flex-1">
           <input
               type="checkbox"
               checked={currentTask.completed}
               onChange={handleToggleCompleted}
-              className="w-5 h-5 rounded-sm border-gray-300"
+              className="w-5 h-5 rounded-sm border-gray-300 mt-1"
             />
-            <input
-              type="text"
-              value={title}
-              onChange={handleTitleChange}
-              className="text-lg font-medium bg-transparent dark:text-white focus:outline-none w-full"
-              placeholder="Task title"
-            />
-            <button
-              onClick={handleToggleImportant}
-              className={`ml-2 transition-colors ${
-                currentTask.important ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              <FiStar 
-                className="w-5 h-5" 
-                fill={currentTask.important ? 'currentColor' : 'none'} 
-              />
-            </button>
+            <div className="flex-1 min-w-0"> {/* Added wrapper div */}
+          <input
+            type="text"
+            value={title}
+            onChange={handleTitleChange}
+            className="text-lg font-medium bg-transparent dark:text-white focus:outline-none w-full break-words"
+            placeholder="Task title"
+            style={{ 
+              wordWrap: 'break-word',
+              height: 'auto',
+              minHeight: '28px'
+            }}
+          />
+        </div>
+        <button
+          onClick={handleToggleImportant}
+          className={`ml-2 transition-colors flex-shrink-0 mt-1 ${
+            currentTask.important ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'
+          }`}
+        >
+          <FiStar 
+            className="w-5 h-5" 
+            fill={currentTask.important ? 'currentColor' : 'none'} 
+          />
+        </button>
           </div>
           
         </div>

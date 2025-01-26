@@ -9,30 +9,34 @@ const TaskList = ({ tasks, onToggleTask, onToggleImportant, onTaskClick }) => {
       key={task.id}
       className="p-4 bg-white dark:bg-gray-800 rounded-lg mb-2 flex justify-between items-center hover:shadow-md transition-shadow"
     >
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 min-w-0 flex-1">
         <input
           type="checkbox"
           checked={task.completed}
           onChange={() => onToggleTask(task.id)}
-          className="w-5 h-5 rounded-sm border-gray-300"
+          className="w-5 h-5 flex-shrink-0 rounded-sm border-gray-300"
         />
-        <button
-          className={`${
-            task.completed ? "line-through text-gray-500" : ""
-          } hover:text-gray-700 dark:hover:text-gray-300`}
-          onClick={() => onTaskClick(task)}
-        >
-          {task.title}
-        </button>
+        <div className="flex-1 min-w-0">
+          <button
+            className={`${
+              task.completed ? "line-through text-gray-500" : ""
+            } hover:text-gray-700 dark:hover:text-gray-300 w-full text-left`}
+            onClick={() => onTaskClick(task)}
+          >
+            <div className="truncate max-w-[300px]" title={task.title}>
+              {task.title}
+            </div>
+          </button>
+        </div>
         {task.dueDate && (
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 flex-shrink-0 ml-2">
             Due: {new Date(task.dueDate).toLocaleDateString()}
           </span>
         )}
       </div>
       <button
         onClick={() => onToggleImportant(task.id)}
-        className={`ml-4 ${
+        className={`ml-4 flex-shrink-0 ${
           task.important ? "text-yellow-500" : "text-gray-500"
         } hover:scale-110 transition-transform`}
       >

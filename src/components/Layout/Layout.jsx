@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Sidebar from './Sidebar.jsx';
 import TaskInput from '../Tasks/TaskInput.jsx';
 import TaskList from '../Tasks/TaskList.jsx';
+import TaskGrid from '../Tasks/TaskGrid.jsx'; 
 import { addTask, toggleTask, toggleImportant } from '../../redux/slices/taskSlice.js';
 import Navbar from './Navbar.jsx';
 import TaskDetails from '../Tasks/TaskDetails.jsx';
@@ -10,6 +11,7 @@ import TaskDetails from '../Tasks/TaskDetails.jsx';
 const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [selectedTask, setSelectedTask] = useState(null);
+  const [isGridView, setIsGridView] = useState(false);
   const tasks = useSelector(state => state.tasks.tasks || []);
   const dispatch = useDispatch();
 
@@ -39,40 +41,58 @@ const Layout = () => {
       dispatch(toggleImportant(taskId));
     }
   };
+
   const handleTaskClick = (task) => {
     const currentTask = tasks.find(t => t.id === task.id);
     setSelectedTask(currentTask);
   };
 
+  const handleViewToggle = () => {
+    setIsGridView(!isGridView);
+  };
+
   return (
     <div className="flex flex-col h-screen bg-secondary-light dark:bg-gray-800">
-        <Navbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} />
+      <Navbar 
+        onMenuClick={() => setSidebarOpen(!sidebarOpen)} 
+        isGridView={isGridView}
+        onViewToggle={handleViewToggle}
+      />
       
       <div className="flex-1 flex">
         {sidebarOpen && (
-        <Sidebar onClose={() => setSidebarOpen(false)} />
-      )}
+          <Sidebar onClose={() => setSidebarOpen(false)} />
+        )}
         
         <main className="flex-1 p-6 overflow-auto">
           <div className="max-w-3xl mx-auto">
             <TaskInput onAddTask={handleAddTask} />
             {Array.isArray(tasks) && (
-              <TaskList
-                tasks={tasks}
-                onToggleTask={handleToggleTask}
-                onToggleImportant={handleToggleImportant}
-                onTaskClick={handleTaskClick}
-              />
+              isGridView ? (
+                <TaskGrid
+                  tasks={tasks}
+                  onToggleTask={handleToggleTask}
+                  onToggleImportant={handleToggleImportant}
+                  onTaskClick={handleTaskClick}
+                />
+              ) : (
+                <TaskList
+                  tasks={tasks}
+                  onToggleTask={handleToggleTask}
+                  onToggleImportant={handleToggleImportant}
+                  onTaskClick={handleTaskClick}
+                />
+              )
             )}
           </div>
         </main>
 
         {selectedTask && (
-            <TaskDetails
-              task={selectedTask}
-              onClose={() => setSelectedTask(null)}
-            />
-          )}
+          <TaskDetails
+            task={selectedTask}
+            onClose={() => setSelectedTask(null)}
+          />
+        )}
       </div>
     </div>
   );

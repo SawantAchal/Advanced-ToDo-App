@@ -1,9 +1,9 @@
 import React from 'react';
-import { FiMenu, FiSearch, FiGrid, FiMoon, FiSun } from 'react-icons/fi';
+import { FiMenu, FiSearch, FiGrid, FiList, FiMoon, FiSun } from 'react-icons/fi';
 import { useTheme } from '../../context/ThemeContext.jsx';
 import Logo from '../../assets/logo.jpg';
 
-const Navbar = ({ onMenuClick }) => {
+const Navbar = ({ onMenuClick, isGridView, onViewToggle }) => {
   const { darkMode, toggleDarkMode } = useTheme();
 
   return (
@@ -13,7 +13,7 @@ const Navbar = ({ onMenuClick }) => {
           onClick={onMenuClick}
           className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg"
         >
-          <FiMenu className="w-6 h-6 dark:text-white " />
+          <FiMenu className="w-6 h-6 dark:text-white" />
         </button>
         <img src={Logo} alt="DoIt Logo" className="h-8" />
       </div>
@@ -22,8 +22,15 @@ const Navbar = ({ onMenuClick }) => {
         <button className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg">
           <FiSearch className="w-6 h-6 dark:text-white" />
         </button>
-        <button className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg">
-          <FiGrid className="w-6 h-6 dark:text-white" />
+        <button 
+          onClick={onViewToggle}
+          className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg"
+        >
+          {isGridView ? (
+            <FiList className="w-6 h-6 dark:text-white" />
+          ) : (
+            <FiGrid className="w-6 h-6 dark:text-white" />
+          )}
         </button>
         <button 
           onClick={toggleDarkMode}
