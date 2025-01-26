@@ -13,14 +13,17 @@ const Layout = () => {
   const tasks = useSelector(state => state.tasks.tasks || []);
   const dispatch = useDispatch();
 
-  const handleAddTask = (title) => {
-    if (typeof title !== 'string') return;
+  const handleAddTask = (taskData) => {
+    if (!taskData.title || typeof taskData.title !== 'string') return;
     
     const newTask = {
       id: Date.now().toString(),
-      title: title.trim(),
+      title: taskData.title.trim(),
       completed: false,
-      important: false
+      important: false,
+      dueDate: taskData.dueDate,
+      notes: '',
+      steps: []
     };
     dispatch(addTask(newTask));
   };
@@ -37,7 +40,8 @@ const Layout = () => {
     }
   };
   const handleTaskClick = (task) => {
-    setSelectedTask(task);
+    const currentTask = tasks.find(t => t.id === task.id);
+    setSelectedTask(currentTask);
   };
 
   return (

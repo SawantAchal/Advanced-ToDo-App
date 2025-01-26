@@ -14,12 +14,11 @@ const Login = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Fetch users from localStorage
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const foundUser = users.find((user) => user.email === email && user.password === password);
 
     if (foundUser) {
-      // Dispatch login action and navigate to the home page
+     
       dispatch(login({ email: foundUser.email }));
       navigate('/');
     } else {

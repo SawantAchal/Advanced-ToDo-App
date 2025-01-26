@@ -1,28 +1,52 @@
-import React, { useState } from 'react';
-import { FiPlus, FiBell, FiCalendar, FiRepeat, FiX, FiTrash2 } from 'react-icons/fi';
+import React, { useEffect, useState } from 'react';
+import { FiPlus, FiBell, FiCalendar, FiRepeat, FiX, FiTrash2, FiStar } from 'react-icons/fi';
 import DatePicker from 'react-datepicker';
 import { format, startOfToday } from 'date-fns';
 import "react-datepicker/dist/react-datepicker.css";
-import { useDispatch } from 'react-redux';
-import { updateTask, deleteTask } from '../../redux/slices/taskSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateTask, deleteTask, toggleImportant } from '../../redux/slices/taskSlice';
 
 const TaskDetails = ({ task, onClose }) => {
   const dispatch = useDispatch();
+  const currentTask = useSelector(state => 
+    state.tasks.tasks.find(t => t.id === task.id)
+  );
+
   const [dueDate, setDueDate] = useState(task.dueDate ? new Date(task.dueDate) : null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [notes, setNotes] = useState(task.notes || '');
+  const [title, setTitle] = useState(task.title);
+
+  useEffect(() => {
+    setDueDate(currentTask.dueDate ? new Date(currentTask.dueDate) : null);
+    setNotes(currentTask.notes || '');
+    setTitle(currentTask.title);
+  }, [currentTask]);
 
   const handleUpdateTask = (updates) => {
-    // If updates contain a date, convert it to ISO string
     const serializedUpdates = {
       ...updates,
       dueDate: updates.dueDate ? updates.dueDate : null
     };
     
     dispatch(updateTask({ 
-      id: task.id, 
+      id: currentTask.id, 
       ...serializedUpdates 
     }));
+  };
+
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    handleUpdateTask({ title: newTitle });
+  };
+
+  const handleToggleCompleted = () => {
+    dispatch(toggleTask(currentTask.id));
+  };
+
+  const handleToggleImportant = () => {
+    dispatch(toggleImportant(currentTask.id));
   };
 
 
@@ -51,27 +75,38 @@ const TaskDetails = ({ task, onClose }) => {
     onClose();
   };
 
+
   return (
     <div className="w-96 border-l dark:border-gray-800 bg-white dark:bg-gray-800 h-screen overflow-y-auto">
       <div className="p-4 flex flex-col h-full">
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center gap-3">
-            <input
+          <input
               type="checkbox"
-              checked={task.completed}
-              onChange={() => handleUpdateTask({ completed: !task.completed })}
+              checked={currentTask.completed}
+              onChange={handleToggleCompleted}
               className="w-5 h-5 rounded-sm border-gray-300"
             />
             <input
               type="text"
-              value={task.title}
-              onChange={(e) => handleUpdateTask({ title: e.target.value })}
-              className="text-lg font-medium bg-transparent dark:text-white focus:outline-none"
+              value={title}
+              onChange={handleTitleChange}
+              className="text-lg font-medium bg-transparent dark:text-white focus:outline-none w-full"
+              placeholder="Task title"
             />
+            <button
+              onClick={handleToggleImportant}
+              className={`ml-2 transition-colors ${
+                currentTask.important ? 'text-yellow-500' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              <FiStar 
+                className="w-5 h-5" 
+                fill={currentTask.important ? 'currentColor' : 'none'} 
+              />
+            </button>
           </div>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
-            <FiX className="w-6 h-6" />
-          </button>
+          
         </div>
 
         <div className="space-y-2 dark:text-white">
@@ -149,6 +184,9 @@ const TaskDetails = ({ task, onClose }) => {
         </div>
 
         <div className="mt-auto pt-4 flex justify-between items-center border-t dark:border-gray-800">
+        <button onClick={onClose} className="text-gray-500 hover:text-gray-700">
+            <FiX className="w-6 h-6" />
+          </button>
           <span className="text-sm text-gray-500">Created Today</span>
           <button
             onClick={handleDelete}

@@ -12,7 +12,6 @@ const Register = () => {
   const handleRegister = (e) => {
     e.preventDefault();
 
-    // Save user info in localStorage
     const users = JSON.parse(localStorage.getItem('users')) || [];
     const isEmailTaken = users.some((user) => user.email === email);
 
