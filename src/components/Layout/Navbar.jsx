@@ -16,7 +16,7 @@ const Navbar = ({ onMenuClick, isGridView, onViewToggle }) => {
           <FiMenu className="w-6 h-6 dark:text-white" />
         </button>
         <img src={Logo} alt="DoIt Logo" className="h-8" />
-        <h1 className="text-white text-2xl">Advanced TODO App</h1>
+        <h1 className="text-white text-2xl">DoIt</h1>
       </div>
       
       <div className="flex items-center gap-4">
