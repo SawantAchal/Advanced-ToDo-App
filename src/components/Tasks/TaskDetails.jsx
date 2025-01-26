@@ -87,7 +87,7 @@ const TaskDetails = ({ task, onClose }) => {
               onChange={handleToggleCompleted}
               className="w-5 h-5 rounded-sm border-gray-300 mt-1"
             />
-            <div className="flex-1 min-w-0"> {/* Added wrapper div */}
+            <div className="flex-1 min-w-0"> 
           <input
             type="text"
             value={title}

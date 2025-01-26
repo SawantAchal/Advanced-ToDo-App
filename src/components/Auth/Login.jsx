@@ -19,7 +19,10 @@ const Login = () => {
 
     if (foundUser) {
      
-      dispatch(login({ email: foundUser.email }));
+      dispatch(login({ 
+        email: foundUser.email,
+        name: foundUser.name 
+      }));
       navigate('/');
     } else {
       setError('Invalid credentials or user not registered.');

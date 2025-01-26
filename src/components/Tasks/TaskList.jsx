@@ -1,13 +1,10 @@
-import React from "react";
-
 const TaskList = ({ tasks, onToggleTask, onToggleImportant, onTaskClick }) => {
   const incompleteTasks = tasks.filter(task => !task.completed);
   const completedTasks = tasks.filter(task => task.completed);
 
   const TaskItem = ({ task }) => (
     <div
-      key={task.id}
-      className="p-4 bg-white dark:bg-gray-800 rounded-lg mb-2 flex justify-between items-center hover:shadow-md transition-shadow"
+      className="p-4 bg-white dark:bg-gray-800 rounded-lg flex justify-between items-center hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700"
     >
       <div className="flex items-center gap-2 min-w-0 flex-1">
         <input
@@ -48,30 +45,42 @@ const TaskList = ({ tasks, onToggleTask, onToggleImportant, onTaskClick }) => {
   return (
     <div className="space-y-6">
       {/* Incomplete Tasks Section */}
-      <div>
-        <h2 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
+        <h2 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300 sticky top-0">
           Tasks ({incompleteTasks.length})
         </h2>
-        <div className="space-y-2">
-          {incompleteTasks.map(task => (
-            <TaskItem key={task.id} task={task} />
-          ))}
+        <div className="h-[300px] overflow-y-auto pr-2">
+          <div className="space-y-3">
+            {incompleteTasks.map(task => (
+              <TaskItem key={task.id} task={task} />
+            ))}
+            {incompleteTasks.length === 0 && (
+              <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+                No pending tasks
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
       {/* Completed Tasks Section */}
-      {completedTasks.length > 0 && (
-        <div>
-          <h2 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300">
-            Completed ({completedTasks.length})
-          </h2>
-          <div className="space-y-2 opacity-75">
+      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-900">
+        <h2 className="text-lg font-semibold mb-3 text-gray-700 dark:text-gray-300 sticky top-0">
+          Completed ({completedTasks.length})
+        </h2>
+        <div className="h-[200px] overflow-y-auto pr-2">
+          <div className="space-y-3 opacity-75">
             {completedTasks.map(task => (
               <TaskItem key={task.id} task={task} />
             ))}
+            {completedTasks.length === 0 && (
+              <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+                No completed tasks
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
 
       {/* No Tasks Message */}
       {tasks.length === 0 && (

@@ -59,31 +59,33 @@ const Layout = () => {
         onViewToggle={handleViewToggle}
       />
       
-      <div className="flex-1 flex">
+      <div className="flex flex-1 overflow-hidden"> {/* Added overflow-hidden here */}
         {sidebarOpen && (
           <Sidebar onClose={() => setSidebarOpen(false)} />
         )}
         
-        <main className="flex-1 p-6 overflow-auto">
-          <div className="max-w-3xl mx-auto">
-            <TaskInput onAddTask={handleAddTask} />
-            {Array.isArray(tasks) && (
-              isGridView ? (
-                <TaskGrid
-                  tasks={tasks}
-                  onToggleTask={handleToggleTask}
-                  onToggleImportant={handleToggleImportant}
-                  onTaskClick={handleTaskClick}
-                />
-              ) : (
-                <TaskList
-                  tasks={tasks}
-                  onToggleTask={handleToggleTask}
-                  onToggleImportant={handleToggleImportant}
-                  onTaskClick={handleTaskClick}
-                />
-              )
-            )}
+        <main className="flex-1 flex flex-col overflow-hidden"> {/* Updated main container */}
+          <div className="flex-1 p-6 overflow-y-auto"> {/* Added flex-1 and overflow-y-auto */}
+            <div className="max-w-3xl mx-auto h-full"> {/* Added h-full */}
+              <TaskInput onAddTask={handleAddTask} />
+              {Array.isArray(tasks) && (
+                isGridView ? (
+                  <TaskGrid
+                    tasks={tasks}
+                    onToggleTask={handleToggleTask}
+                    onToggleImportant={handleToggleImportant}
+                    onTaskClick={handleTaskClick}
+                  />
+                ) : (
+                  <TaskList
+                    tasks={tasks}
+                    onToggleTask={handleToggleTask}
+                    onToggleImportant={handleToggleImportant}
+                    onTaskClick={handleTaskClick}
+                  />
+                )
+              )}
+            </div>
           </div>
         </main>
 

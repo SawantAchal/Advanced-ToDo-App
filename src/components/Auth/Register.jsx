@@ -20,7 +20,7 @@ const Register = () => {
       return;
     }
 
-    const newUser = { name, email, password, setConfirmPassword };
+    const newUser = { name, email, password };
     localStorage.setItem('users', JSON.stringify([...users, newUser]));
 
     alert('Registration successful! Please log in.');

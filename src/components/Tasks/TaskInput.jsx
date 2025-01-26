@@ -27,26 +27,26 @@ const TaskInput = ({ onAddTask }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-darkBg p-4 rounded-lg shadow-sm border dark:border-gray-800">
+    <div className="bg-white dark:bg-green-200 p-4 rounded-lg shadow-sm border dark:border-gray-800">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           value={taskTitle}
           onChange={(e) => setTaskTitle(e.target.value)}
           placeholder="Add A Task"
-          className="w-full px-4 py-2 bg-secondary-light dark:bg-secondary-dark rounded-lg dark:text-white placeholder-gray-500"
+          className="w-full px-4 py-2 bg-secondary-light dark:bg-green-200 rounded-lg dark:text-black placeholder-gray-500"
         />
         <div className="flex items-center justify-between mt-4">
           <div className="flex items-center gap-4">
             <button 
               type="button" 
-              className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg text-gray-600 dark:text-gray-300"
+              className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg text-gray-600 dark:text-gray-800"
             >
               <FiBell className="w-5 h-5" />
             </button>
             <button 
               type="button" 
-              className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg text-gray-600 dark:text-gray-300"
+              className="p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg text-gray-600 dark:text-gray-800"
             >
               <FiRepeat className="w-5 h-5" />
             </button>
@@ -54,7 +54,7 @@ const TaskInput = ({ onAddTask }) => {
               <button
                 type="button"
                 onClick={() => setShowCalendar(!showCalendar)}
-                className={`p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg text-gray-600 dark:text-gray-300 
+                className={`p-2 hover:bg-secondary-light dark:hover:bg-secondary-dark rounded-lg text-gray-600 dark:text-gray-800 
                   ${dueDate ? 'text-primary dark:text-primary' : ''}`}
               >
                 <FiCalendar className="w-5 h-5" />
